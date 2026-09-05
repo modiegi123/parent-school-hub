@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{BA9D27C7-30FC-495B-AB5D-0D3A7B00FFEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentSchoolHub.Api", "backend\ParentSchoolHub.Api\ParentSchoolHub.Api.csproj", "{22879DD5-B9ED-47DB-B580-442AD3153116}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22879DD5-B9ED-47DB-B580-442AD3153116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22879DD5-B9ED-47DB-B580-442AD3153116}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22879DD5-B9ED-47DB-B580-442AD3153116}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22879DD5-B9ED-47DB-B580-442AD3153116}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{22879DD5-B9ED-47DB-B580-442AD3153116} = {BA9D27C7-30FC-495B-AB5D-0D3A7B00FFEE}
+	EndGlobalSection
+EndGlobal
