@@ -37,7 +37,8 @@ public static class DbSeeder
 
         var student1 = new Student { Name = "Sam Student", SchoolId = school.Id, ClassRoomId = classRoom.Id, DateOfBirth = new DateOnly(2016, 3, 12) };
         var student2 = new Student { Name = "Sipho Scholar", SchoolId = school.Id, ClassRoomId = classRoom.Id, DateOfBirth = new DateOnly(2016, 7, 2) };
-        db.Students.AddRange(student1, student2);
+        var student3 = new Student { Name = "Thandi Third", SchoolId = school.Id, ClassRoomId = classRoom.Id, DateOfBirth = new DateOnly(2016, 1, 20) };
+        db.Students.AddRange(student1, student2, student3);
         db.SaveChanges();
 
         db.ParentStudents.AddRange(
@@ -61,6 +62,7 @@ public static class DbSeeder
                 Title = "Reading: Chapter 3",
                 Description = "Read chapter 3 of 'The Great Adventure' and answer the questions on page 42.",
                 DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)),
+                CreatedAt = DateTime.UtcNow,
                 CreatedByUserId = teacher.Id
             },
             new Homework
@@ -69,6 +71,7 @@ public static class DbSeeder
                 Title = "Maths worksheet: Fractions",
                 Description = "Complete the fractions worksheet handed out in class.",
                 DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
+                CreatedAt = DateTime.UtcNow,
                 CreatedByUserId = teacher.Id
             }
         );
@@ -77,9 +80,29 @@ public static class DbSeeder
         db.Grades.AddRange(
             new Grade { StudentId = student1.Id, Subject = "Mathematics", Term = currentTerm, Score = 78 },
             new Grade { StudentId = student1.Id, Subject = "English", Term = currentTerm, Score = 85 },
-            new Grade { StudentId = student2.Id, Subject = "Mathematics", Term = currentTerm, Score = 91 },
-            new Grade { StudentId = student2.Id, Subject = "English", Term = currentTerm, Score = 74 }
+            new Grade { StudentId = student2.Id, Subject = "Mathematics", Term = currentTerm, Score = 58 },
+            new Grade { StudentId = student2.Id, Subject = "English", Term = currentTerm, Score = 62 },
+            new Grade { StudentId = student3.Id, Subject = "Mathematics", Term = currentTerm, Score = 35 },
+            new Grade { StudentId = student3.Id, Subject = "English", Term = currentTerm, Score = 42 }
         );
+
+        var markedByTeacherDays = new[] { 1, 2, 3, 6, 7 };
+        foreach (var daysAgo in markedByTeacherDays)
+        {
+            var date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-daysAgo));
+            db.AttendanceRecords.AddRange(
+                new AttendanceRecord { StudentId = student1.Id, ClassRoomId = classRoom.Id, Date = date, Status = AttendanceStatus.Present, MarkedByUserId = teacher.Id },
+                new AttendanceRecord { StudentId = student2.Id, ClassRoomId = classRoom.Id, Date = date, Status = daysAgo == 3 ? AttendanceStatus.Absent : AttendanceStatus.Present, MarkedByUserId = teacher.Id },
+                new AttendanceRecord { StudentId = student3.Id, ClassRoomId = classRoom.Id, Date = date, Status = daysAgo is 2 or 7 ? AttendanceStatus.Late : AttendanceStatus.Present, MarkedByUserId = teacher.Id }
+            );
+        }
+
+        var teacherLoginDays = new[] { 1, 2, 4, 8, 12 };
+        foreach (var daysAgo in teacherLoginDays)
+        {
+            db.LoginActivities.Add(new LoginActivity { UserId = teacher.Id, OccurredAt = DateTime.UtcNow.AddDays(-daysAgo) });
+        }
+        db.LoginActivities.Add(new LoginActivity { UserId = admin.Id, OccurredAt = DateTime.UtcNow });
 
         db.Fees.AddRange(
             new Fee

@@ -37,6 +37,9 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid email or password." });
         }
 
+        _db.LoginActivities.Add(new LoginActivity { UserId = user.Id, OccurredAt = DateTime.UtcNow });
+        await _db.SaveChangesAsync();
+
         var token = _tokenService.CreateToken(user);
         return new LoginResponse(token, user.Name, user.Email, user.Role.ToString(), user.SchoolId, user.Id);
     }

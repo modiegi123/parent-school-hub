@@ -12,6 +12,11 @@ export default function DashboardLayout() {
         <div className="row">
           <strong>Parent-School Hub</strong>
           <nav>
+            {user.role === 'Admin' && (
+              <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+                Dashboard
+              </NavLink>
+            )}
             <NavLink to="/announcements" className={({ isActive }) => (isActive ? 'active' : '')}>
               Announcements
             </NavLink>

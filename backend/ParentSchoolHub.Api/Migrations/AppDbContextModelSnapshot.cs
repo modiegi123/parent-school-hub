@@ -172,6 +172,9 @@ namespace ParentSchoolHub.Api.Migrations
                     b.Property<int>("ClassRoomId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("INTEGER");
 
@@ -193,6 +196,25 @@ namespace ParentSchoolHub.Api.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Homeworks");
+                });
+
+            modelBuilder.Entity("ParentSchoolHub.Api.Models.LoginActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OccurredAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LoginActivities");
                 });
 
             modelBuilder.Entity("ParentSchoolHub.Api.Models.ParentStudent", b =>
@@ -445,6 +467,17 @@ namespace ParentSchoolHub.Api.Migrations
                     b.Navigation("ClassRoom");
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("ParentSchoolHub.Api.Models.LoginActivity", b =>
+                {
+                    b.HasOne("ParentSchoolHub.Api.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ParentSchoolHub.Api.Models.ParentStudent", b =>

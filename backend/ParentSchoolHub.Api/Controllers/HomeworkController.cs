@@ -76,6 +76,7 @@ public class HomeworkController : ControllerBase
             Title = request.Title,
             Description = request.Description,
             DueDate = request.DueDate,
+            CreatedAt = DateTime.UtcNow,
             CreatedByUserId = User.GetUserId()
         };
 

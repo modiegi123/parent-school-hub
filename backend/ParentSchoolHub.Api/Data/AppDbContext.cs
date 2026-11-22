@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<Fee> Fees => Set<Fee>();
     public DbSet<SchoolEvent> SchoolEvents => Set<SchoolEvent>();
     public DbSet<ReportCard> ReportCards => Set<ReportCard>();
+    public DbSet<LoginActivity> LoginActivities => Set<LoginActivity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -75,6 +76,12 @@ public class AppDbContext : DbContext
             .HasOne(h => h.CreatedBy)
             .WithMany()
             .HasForeignKey(h => h.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<LoginActivity>()
+            .HasOne(l => l.User)
+            .WithMany()
+            .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -8,6 +8,7 @@ import MarksPage from './pages/MarksPage';
 import FeesPage from './pages/FeesPage';
 import EventsPage from './pages/EventsPage';
 import ReportCardsPage from './pages/ReportCardsPage';
+import DashboardPage from './pages/DashboardPage';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/fees" element={<FeesPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/report-cards" element={<ReportCardsPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/announcements" replace />} />
     </Routes>

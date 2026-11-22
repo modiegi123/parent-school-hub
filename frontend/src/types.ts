@@ -92,3 +92,32 @@ export interface ReportCard {
   studentId: number;
   studentName: string;
 }
+
+export interface PerformanceBuckets {
+  well: number;
+  average: number;
+  poor: number;
+  noData: number;
+}
+
+export interface AttendanceSummary {
+  presentCount: number;
+  totalCount: number;
+  presentRate: number | null;
+}
+
+export interface TeacherActivityRow {
+  teacherId: number;
+  teacherName: string;
+  loginCount: number;
+  homeworkPosted: number;
+  announcementsPosted: number;
+}
+
+export interface DashboardOverview {
+  month: string;
+  performance: PerformanceBuckets;
+  attendance: AttendanceSummary;
+  teacherActivity: TeacherActivityRow[];
+  eventsThisMonth: number;
+}
