@@ -102,6 +102,13 @@ public static class DbSeeder
         {
             db.LoginActivities.Add(new LoginActivity { UserId = teacher.Id, OccurredAt = DateTime.UtcNow.AddDays(-daysAgo) });
         }
+
+        var parentLoginDays = new[] { 2, 9 };
+        foreach (var daysAgo in parentLoginDays)
+        {
+            db.LoginActivities.Add(new LoginActivity { UserId = parent.Id, OccurredAt = DateTime.UtcNow.AddDays(-daysAgo) });
+        }
+
         db.LoginActivities.Add(new LoginActivity { UserId = admin.Id, OccurredAt = DateTime.UtcNow });
 
         db.Fees.AddRange(

@@ -102,13 +102,16 @@ export interface PerformanceBuckets {
 
 export interface AttendanceSummary {
   presentCount: number;
+  absentCount: number;
+  lateCount: number;
   totalCount: number;
   presentRate: number | null;
 }
 
-export interface TeacherActivityRow {
-  teacherId: number;
-  teacherName: string;
+export interface UserActivityRow {
+  userId: number;
+  userName: string;
+  role: 'Teacher' | 'Parent';
   loginCount: number;
   homeworkPosted: number;
   announcementsPosted: number;
@@ -118,6 +121,6 @@ export interface DashboardOverview {
   month: string;
   performance: PerformanceBuckets;
   attendance: AttendanceSummary;
-  teacherActivity: TeacherActivityRow[];
+  userActivity: UserActivityRow[];
   eventsThisMonth: number;
 }

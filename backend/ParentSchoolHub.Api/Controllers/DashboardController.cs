@@ -61,40 +61,44 @@ public class DashboardController : ControllerBase
             .ToListAsync();
 
         var presentCount = attendanceRecords.Count(a => a.Status == AttendanceStatus.Present);
+        var absentCount = attendanceRecords.Count(a => a.Status == AttendanceStatus.Absent);
+        var lateCount = attendanceRecords.Count(a => a.Status == AttendanceStatus.Late);
         var totalAttendance = attendanceRecords.Count;
         double? presentRate = totalAttendance == 0 ? null : Math.Round(presentCount * 100.0 / totalAttendance, 1);
 
-        var teachers = await _db.Users
-            .Where(u => u.SchoolId == schoolId && u.Role == UserRole.Teacher)
-            .OrderBy(u => u.Name)
+        var activeUsers = await _db.Users
+            .Where(u => u.SchoolId == schoolId && (u.Role == UserRole.Teacher || u.Role == UserRole.Parent))
+            .OrderBy(u => u.Role)
+            .ThenBy(u => u.Name)
             .ToListAsync();
-        var teacherIds = teachers.Select(t => t.Id).ToList();
+        var activeUserIds = activeUsers.Select(u => u.Id).ToList();
 
         var loginCounts = await _db.LoginActivities
-            .Where(l => teacherIds.Contains(l.UserId) && l.OccurredAt >= monthStart && l.OccurredAt < monthEnd)
+            .Where(l => activeUserIds.Contains(l.UserId) && l.OccurredAt >= monthStart && l.OccurredAt < monthEnd)
             .GroupBy(l => l.UserId)
             .Select(g => new { UserId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.UserId, x => x.Count);
 
         var homeworkCounts = await _db.Homeworks
-            .Where(h => teacherIds.Contains(h.CreatedByUserId) && h.CreatedAt >= monthStart && h.CreatedAt < monthEnd)
+            .Where(h => activeUserIds.Contains(h.CreatedByUserId) && h.CreatedAt >= monthStart && h.CreatedAt < monthEnd)
             .GroupBy(h => h.CreatedByUserId)
             .Select(g => new { UserId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.UserId, x => x.Count);
 
         var announcementCounts = await _db.Announcements
-            .Where(a => teacherIds.Contains(a.AuthorUserId) && a.CreatedAt >= monthStart && a.CreatedAt < monthEnd)
+            .Where(a => activeUserIds.Contains(a.AuthorUserId) && a.CreatedAt >= monthStart && a.CreatedAt < monthEnd)
             .GroupBy(a => a.AuthorUserId)
             .Select(g => new { UserId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.UserId, x => x.Count);
 
-        var teacherActivity = teachers
-            .Select(t => new TeacherActivityRow(
-                t.Id,
-                t.Name,
-                loginCounts.TryGetValue(t.Id, out var lc) ? lc : 0,
-                homeworkCounts.TryGetValue(t.Id, out var hc) ? hc : 0,
-                announcementCounts.TryGetValue(t.Id, out var ac) ? ac : 0))
+        var userActivity = activeUsers
+            .Select(u => new UserActivityRow(
+                u.Id,
+                u.Name,
+                u.Role.ToString(),
+                loginCounts.TryGetValue(u.Id, out var lc) ? lc : 0,
+                homeworkCounts.TryGetValue(u.Id, out var hc) ? hc : 0,
+                announcementCounts.TryGetValue(u.Id, out var ac) ? ac : 0))
             .ToList();
 
         var eventsThisMonth = await _db.SchoolEvents
@@ -103,8 +107,8 @@ public class DashboardController : ControllerBase
         return new DashboardOverviewDto(
             monthLabel,
             new PerformanceBuckets(well, average, poor, noData),
-            new AttendanceSummary(presentCount, totalAttendance, presentRate),
-            teacherActivity,
+            new AttendanceSummary(presentCount, absentCount, lateCount, totalAttendance, presentRate),
+            userActivity,
             eventsThisMonth);
     }
 }
