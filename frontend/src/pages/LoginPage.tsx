@@ -3,20 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { ApiError } from '../api/client';
 
+const DEMO_PASSWORD = 'Password123!';
+
+const DEMO_ACCOUNTS = [
+  { role: 'Admin', email: 'admin@brightfield.edu' },
+  { role: 'Teacher', email: 'teacher@brightfield.edu' },
+  { role: 'Parent', email: 'parent@brightfield.edu' },
+] as const;
+
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@brightfield.edu');
-  const [password, setPassword] = useState('Password123!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function doLogin(loginEmail: string, loginPassword: string) {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password);
+      await login(loginEmail, loginPassword);
       navigate('/announcements');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not reach the server.');
@@ -25,13 +32,39 @@ export default function LoginPage() {
     }
   }
 
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    await doLogin(email, password);
+  }
+
+  async function handleDemoLogin(demoEmail: string) {
+    setEmail(demoEmail);
+    setPassword(DEMO_PASSWORD);
+    await doLogin(demoEmail, DEMO_PASSWORD);
+  }
+
   return (
     <div className="login-shell">
       <form className="card login-card" onSubmit={handleSubmit}>
         <h2>Parent-School Hub</h2>
-        <p className="muted" style={{ marginBottom: 16 }}>
-          Demo accounts (password: Password123!): admin@brightfield.edu, teacher@brightfield.edu, parent@brightfield.edu
-        </p>
+
+        <p className="muted" style={{ marginBottom: 8 }}>Log in as:</p>
+        <div className="row" style={{ marginBottom: 16 }}>
+          {DEMO_ACCOUNTS.map((account) => (
+            <button
+              key={account.role}
+              type="button"
+              className="secondary"
+              disabled={loading}
+              onClick={() => handleDemoLogin(account.email)}
+              style={{ flex: 1 }}
+            >
+              {account.role}
+            </button>
+          ))}
+        </div>
+
+        <p className="muted" style={{ marginBottom: 16 }}>Or sign in manually:</p>
         <div className="field">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
