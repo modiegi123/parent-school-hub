@@ -172,9 +172,6 @@ namespace ParentSchoolHub.Api.Migrations
                     b.Property<int>("ClassRoomId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CreatedById")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("INTEGER");
 
@@ -193,7 +190,7 @@ namespace ParentSchoolHub.Api.Migrations
 
                     b.HasIndex("ClassRoomId");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Homeworks");
                 });
@@ -441,7 +438,9 @@ namespace ParentSchoolHub.Api.Migrations
 
                     b.HasOne("ParentSchoolHub.Api.Models.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ClassRoom");
 

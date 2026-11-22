@@ -176,6 +176,10 @@ th, td {
 .status-Absent { background: rgba(192,57,43,0.15); color: var(--danger); }
 .status-Late { background: rgba(200,150,0,0.15); color: #a67c00; }
 
+.status-Paid { background: rgba(30,126,52,0.15); color: var(--success); }
+.status-Pending { background: rgba(200,150,0,0.15); color: #a67c00; }
+.status-Overdue { background: rgba(192,57,43,0.15); color: var(--danger); }
+
 .row {
   display: flex;
   gap: 12px;

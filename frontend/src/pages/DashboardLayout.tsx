@@ -18,6 +18,23 @@ export default function DashboardLayout() {
             <NavLink to="/attendance" className={({ isActive }) => (isActive ? 'active' : '')}>
               Attendance
             </NavLink>
+            <NavLink to="/homework" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Homework
+            </NavLink>
+            <NavLink to="/marks" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Marks
+            </NavLink>
+            {user.role !== 'Teacher' && (
+              <NavLink to="/fees" className={({ isActive }) => (isActive ? 'active' : '')}>
+                Fees
+              </NavLink>
+            )}
+            <NavLink to="/events" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Events
+            </NavLink>
+            <NavLink to="/report-cards" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Report Cards
+            </NavLink>
           </nav>
         </div>
         <div className="row">

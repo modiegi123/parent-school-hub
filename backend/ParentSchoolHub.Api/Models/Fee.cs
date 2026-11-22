@@ -7,7 +7,7 @@ public enum FeeStatus
     Overdue
 }
 
-// Data model only for now — no controller/UI or payment gateway integration yet.
+// Status management only — no real payment gateway integration yet.
 public class Fee
 {
     public int Id { get; set; }

@@ -1,6 +1,6 @@
 namespace ParentSchoolHub.Api.Models;
 
-// Data model only for now — no controller/UI/PDF generation yet.
+// Summary is a compiled text snapshot of grades + attendance — no PDF generation yet.
 public class ReportCard
 {
     public int Id { get; set; }

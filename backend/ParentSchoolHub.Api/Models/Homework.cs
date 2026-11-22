@@ -1,6 +1,5 @@
 namespace ParentSchoolHub.Api.Models;
 
-// Data model only for now — no controller/UI yet. Next module to build out.
 public class Homework
 {
     public int Id { get; set; }

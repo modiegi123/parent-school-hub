@@ -70,5 +70,11 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(a => a.AuthorUserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Homework>()
+            .HasOne(h => h.CreatedBy)
+            .WithMany()
+            .HasForeignKey(h => h.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

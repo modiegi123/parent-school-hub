@@ -1,6 +1,5 @@
 namespace ParentSchoolHub.Api.Models;
 
-// Data model only for now — no controller/UI yet.
 public class Grade
 {
     public int Id { get; set; }

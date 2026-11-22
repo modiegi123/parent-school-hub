@@ -54,6 +54,69 @@ public static class DbSeeder
             CreatedAt = DateTime.UtcNow
         });
 
+        db.Homeworks.AddRange(
+            new Homework
+            {
+                ClassRoomId = classRoom.Id,
+                Title = "Reading: Chapter 3",
+                Description = "Read chapter 3 of 'The Great Adventure' and answer the questions on page 42.",
+                DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)),
+                CreatedByUserId = teacher.Id
+            },
+            new Homework
+            {
+                ClassRoomId = classRoom.Id,
+                Title = "Maths worksheet: Fractions",
+                Description = "Complete the fractions worksheet handed out in class.",
+                DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)),
+                CreatedByUserId = teacher.Id
+            }
+        );
+
+        const string currentTerm = "Term 4 2026";
+        db.Grades.AddRange(
+            new Grade { StudentId = student1.Id, Subject = "Mathematics", Term = currentTerm, Score = 78 },
+            new Grade { StudentId = student1.Id, Subject = "English", Term = currentTerm, Score = 85 },
+            new Grade { StudentId = student2.Id, Subject = "Mathematics", Term = currentTerm, Score = 91 },
+            new Grade { StudentId = student2.Id, Subject = "English", Term = currentTerm, Score = 74 }
+        );
+
+        db.Fees.AddRange(
+            new Fee
+            {
+                StudentId = student1.Id,
+                Description = "Term 4 tuition fee",
+                Amount = 2500m,
+                DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)),
+                Status = FeeStatus.Pending
+            },
+            new Fee
+            {
+                StudentId = student2.Id,
+                Description = "Term 4 tuition fee",
+                Amount = 2500m,
+                DueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(14)),
+                Status = FeeStatus.Paid
+            }
+        );
+
+        db.SchoolEvents.AddRange(
+            new SchoolEvent
+            {
+                SchoolId = school.Id,
+                Title = "Parent-Teacher Evening",
+                Location = "Main Hall",
+                StartsAt = DateTime.UtcNow.AddDays(10)
+            },
+            new SchoolEvent
+            {
+                SchoolId = school.Id,
+                Title = "Sports Day",
+                Location = "School Field",
+                StartsAt = DateTime.UtcNow.AddDays(21)
+            }
+        );
+
         db.SaveChanges();
     }
 }
