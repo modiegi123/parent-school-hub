@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: parent-school-hub-api
+    runtime: docker
+    dockerfilePath: ./backend/ParentSchoolHub.Api/Dockerfile
+    dockerContext: ./backend/ParentSchoolHub.Api
+    plan: free
+    envVars:
+      - key: Jwt__Key
+        generateValue: true
+      - key: Cors__AllowedOrigins
+        value: https://modiegi123.github.io

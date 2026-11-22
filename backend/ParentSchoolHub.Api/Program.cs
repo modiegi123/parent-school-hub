@@ -39,11 +39,13 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 const string FrontendCorsPolicy = "FrontendDev";
+var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    ?? Array.Empty<string>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(FrontendCorsPolicy, policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(new[] { "http://localhost:5173" }.Concat(allowedOrigins).ToArray())
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -95,5 +97,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    app.Urls.Add($"http://0.0.0.0:{port}");
+}
 
 app.Run();
