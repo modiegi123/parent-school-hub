@@ -4,7 +4,7 @@ import type { AuthUser } from '../types';
 
 interface AuthContextValue {
   user: AuthUser | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<AuthUser>;
   logout: () => void;
 }
 
@@ -40,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(authUser));
     setUser(authUser);
+    return authUser;
   }
 
   function logout() {

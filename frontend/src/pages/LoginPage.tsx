@@ -23,8 +23,8 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      await login(loginEmail, loginPassword);
-      navigate('/announcements');
+      const authUser = await login(loginEmail, loginPassword);
+      navigate(authUser.role === 'Admin' ? '/dashboard' : '/announcements');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not reach the server.');
     } finally {
